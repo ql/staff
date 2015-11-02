@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @position.name %>
+</p>
+
+<p>
+  <strong>Expires at:</strong>
+  <%= @position.expires_at %>
+</p>
+
+<p>
+  <strong>Salary:</strong>
+  <%= @position.salary %>
+</p>
+
+<p>
+  <strong>Contacts:</strong>
+  <%= @position.contacts %>
+</p>
+
+<%= link_to 'Edit', edit_position_path(@position) %> |
+<%= link_to 'Back', positions_path %>
