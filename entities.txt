@@ -1,0 +1,19 @@
+Position
+ name:string
+ timestamps
+ expires_at:date
+ salary:integer
+ contacts:text
+ 
+Employee(?)
+ name:string
+ phone:string
+ email:email
+ status:string
+ salary:integer
+ 
+
+Skill
+ name:string
+
+
