@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
-  resources :applicants
+  resources :applicants do
+    get 'matches', on: :member
+  end
+  resources :positions do
+    get 'matches', on: :member
+  end
   resources :skills
-  resources :positions
   root 'index#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

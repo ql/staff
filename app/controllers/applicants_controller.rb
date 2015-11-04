@@ -1,5 +1,5 @@
 class ApplicantsController < ApplicationController
-  before_action :set_applicant, only: [:show, :edit, :update, :destroy]
+  before_action :set_applicant, only: [:show, :matches, :edit, :update, :destroy]
 
   # GET /applicants
   # GET /applicants.json
@@ -10,6 +10,10 @@ class ApplicantsController < ApplicationController
   # GET /applicants/1
   # GET /applicants/1.json
   def show
+  end
+
+  def matches
+    @matches = @applicant.matches
   end
 
   # GET /applicants/new

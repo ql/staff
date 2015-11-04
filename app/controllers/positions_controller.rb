@@ -1,5 +1,5 @@
 class PositionsController < ApplicationController
-  before_action :set_position, only: [:show, :edit, :update, :destroy]
+  before_action :set_position, only: [:show, :matches, :edit, :update, :destroy]
 
   # GET /positions
   # GET /positions.json
@@ -10,6 +10,10 @@ class PositionsController < ApplicationController
   # GET /positions/1
   # GET /positions/1.json
   def show
+  end
+
+  def matches
+    @matches = @position.matches
   end
 
   # GET /positions/new
