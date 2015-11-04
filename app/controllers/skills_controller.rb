@@ -1,10 +1,12 @@
 class SkillsController < ApplicationController
   before_action :set_skill, only: [:show, :edit, :update, :destroy]
+  respond_to :json
 
   # GET /skills
   # GET /skills.json
   def index
     @skills = Skill.all
+    respond_with(:json)
   end
 
   # GET /skills/1

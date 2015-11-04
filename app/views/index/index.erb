@@ -1,0 +1,83 @@
+<div ng-app="myApp" ng-controller="ViewSkillsController">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <%= render "navbar" %>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Dashboard</h1>
+
+        <div ng-view></div>
+         <script type="text/ng-template" id="viewSkills.htm">
+          <h2 class="sub-header">Skills</h2>
+          <button class="btn btn-default" style="float:right" data-toggle="modal" data-target="#newSkillModal">Add skill</button>
+<!-- Modal -->
+<div id="newSkillModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add skill</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+        <input type="text" ng-model="skill.name">
+        <button ng-click="addSkill();">Save</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- -->
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+                <tr ng-repeat="x in skills">
+                  <td><a href="" ng-click="editSkill(x);">{{x.name}}</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </script>
+
+     <script type="text/ng-template" id="editSkill.htm">
+      <h3>Skill: {{skill.name}}</h3>
+
+      <input type="text" class="form-control" placeholder="New name" ng-model="newName">
+      <button ng-click="renameSkill(skill, newName);">Rename</button>
+      <button ng-click="deleteSkill(skill);">Delete</button>
+    </script>
+        </div>
+      </div>
+    </div>
+</div>
