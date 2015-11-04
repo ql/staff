@@ -17,10 +17,11 @@ ActiveRecord::Schema.define(version: 20151102171230) do
   enable_extension "plpgsql"
 
   create_table "applicant_skills", force: :cascade do |t|
-    t.string  "skillname"
     t.integer "skill_id"
     t.integer "applicant_id"
   end
+
+  add_index "applicant_skills", ["skill_id", "applicant_id"], name: "index_applicant_skills_on_skill_id_and_applicant_id", unique: true, using: :btree
 
   create_table "applicants", force: :cascade do |t|
     t.string   "first_name"
@@ -35,10 +36,11 @@ ActiveRecord::Schema.define(version: 20151102171230) do
   end
 
   create_table "position_skills", force: :cascade do |t|
-    t.string  "skillname"
     t.integer "skill_id"
     t.integer "position_id"
   end
+
+  add_index "position_skills", ["skill_id", "position_id"], name: "index_position_skills_on_skill_id_and_position_id", unique: true, using: :btree
 
   create_table "positions", force: :cascade do |t|
     t.string   "name"

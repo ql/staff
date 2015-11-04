@@ -1,7 +1,25 @@
-var app = angular.module('myApp', ['ngResource', 'ngRoute']);
+var app = angular.module('myApp', ['ngResource', 'ngRoute', 'ngTagsInput']);
 
 app.factory('Skill', ['$resource', function($resource) {
-  return $resource('/skills/:id', null, {'update': { method:'PUT'}});
+  return $resource('/skills/:id', 
+                    null, {
+      'update':   { method:'PUT'}, 
+      'complete': { method: 'GET', url: 'skills/complete', isArray: true}
+  });
+}]);
+
+app.factory('Position', ['$resource', function($resource) {
+  return $resource('/positions/:id', null, {
+    'update': { method:'PUT'},
+    'matches': { method: 'GET', isArray: true}
+  });
+}]);
+
+app.factory('Applicant', ['$resource', function($resource) {
+  return $resource('/applicants/:id', null, {
+    'update': { method:'PUT'},
+    'matches': { method: 'GET', url: 'applicants/:id/matches', isArray: true}
+  });
 }]);
 
 
@@ -13,16 +31,37 @@ app.config(['$routeProvider', function($routeProvider) {
      when('/editSkill/:id', {
         templateUrl: 'editSkill.htm', controller: 'EditSkillController'
      }).
+     when('/editPosition/:id', {
+        templateUrl: 'editPosition.htm', controller: 'EditPositionController'
+     }).
+     when('/editPosition', {
+        templateUrl: 'editPosition.htm', controller: 'EditPositionController'
+     }).
+     when('/viewPositions', {
+        templateUrl: 'viewPositions.htm', controller: 'ViewPositionsController'
+     }).
+     when('/viewApplicants/:id/viewMatches', {
+        templateUrl: 'viewPositions.htm', controller: 'MatchedPositionsController'
+     }).
+     when('/viewApplicants', {
+        templateUrl: 'viewApplicants.htm', controller: 'ViewApplicantsController'
+     }).
+     when('/editApplicant/:id', {
+        templateUrl: 'editApplicant.htm', controller: 'EditApplicantController'
+     }).
+     when('/viewMatchedPositions', {
+        templateUrl: 'viewMatchedPositions.htm', controller: 'MatchedPositionsController'
+     }).
    otherwise({
-      redirectTo: '/viewSkills' //#TODO
+      redirectTo: '/viewPositions' //#TODO
    });
 	
 }]);
 
 app.controller('ViewSkillsController', ['$scope', 'Skill', '$location', function($scope, Skill, $location) {
     $scope.skills = Skill.query();
-
     $scope.skill = new Skill();
+
     $scope.addSkill = function() {
       $scope.skill.$save();
       $location.path('/viewSkills/');
@@ -48,7 +87,7 @@ app.controller('EditSkillController', ['$scope', 'Skill', '$routeParams', '$loca
         {id: skill.id},
         skill, 
         null, 
-        function(httpResponse) {alert('cannot');} //err
+        function(httpResponse) {alert('Unable to delete');} //err
       );
     };
 
@@ -60,4 +99,91 @@ app.controller('EditSkillController', ['$scope', 'Skill', '$routeParams', '$loca
     };
 
 
+
+
+}]);
+
+app.controller('ViewPositionsController', ['$scope', 'Position', '$location', function($scope, Position, $location) {
+  $scope.positions = Position.query();
+  
+  $scope.addPosition = function() {
+    $location.path('/addPosition/');
+  };
+
+  $scope.editPosition = function(id) {
+    $location.path('/editPosition/'+id); //hack 
+  };
+}]);
+
+app.controller('EditPositionController', ['$scope', 'Position', 'Skill', '$routeParams', '$location', function($scope, Position, Skill, $routeParams, $location) {
+  if ($routeParams.id) {
+    $scope.position = Position.get({id: $routeParams.id});
+  } else {
+    $scope.position = new Position();
+  }
+
+  $scope.savePosition = function(position) {
+    Position.update(
+      {id: position.id},
+      position,
+      function() { $location.path('/viewPositions/'); },
+      function() { alert("Server error :("); }
+    );
+    
+  };
+
+  $scope.loadSkills = function(query) {
+    return Skill.complete({query: query}).$promise;
+  };
+}]);
+
+app.controller('ViewApplicantsController', ['$scope', 'Applicant', '$location', function($scope, Applicant, $location) {
+  $scope.applicants = Applicant.query();
+  
+  $scope.addApplicant = function() {
+    $location.path('/editApplicant/');
+  };
+
+  $scope.editApplicant = function(id) {
+    $location.path('/editApplicant/'+id); //hack 
+  };
+
+  $scope.viewMatches = function(id) {
+    $location.path('/viewApplicants/'+id+ '/viewMatches'); //hack 
+  };
+}]);
+
+app.controller('EditApplicantController', ['$scope', 'Applicant', 'Skill', '$routeParams', '$location', function($scope, Applicant, Skill, $routeParams, $location) {
+  if ($routeParams.id) {
+    $scope.applicant = Applicant.get({id: $routeParams.id});
+  } else {
+    $scope.applicant = new Applicant();
+  }
+  $scope.applicants = Applicant.query();
+  
+  $scope.addApplicant = function() {
+    $location.path('/editApplicants/');
+  };
+
+  $scope.editApplicant = function(id) {
+    $location.path('/editApplicants/'+id); //hack 
+  };
+
+  $scope.loadSkills = function(query) {
+    return Skill.complete({query: query}).$promise;
+  };
+
+  $scope.saveApplicant = function(applicant) {
+    Applicant.update(
+      {id: applicant.id},
+      applicant,
+      function() { $location.path('/viewApplicants/'); },
+      function() { alert("Server error :("); }
+    );
+  };
+
+}]);
+app.controller('MatchedPositionsController', ['$scope', 'Applicant', 'Skill', '$routeParams', '$location', function($scope, Applicant, Skill, $routeParams, $location) {
+  $scope.applicant = Applicant.get({id: $routeParams.id});
+  $scope.positions = Applicant.matches({id: $routeParams.id});
 }]);

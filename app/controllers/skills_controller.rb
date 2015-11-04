@@ -1,3 +1,4 @@
+# encoding: utf-8
 class SkillsController < ApplicationController
   before_action :set_skill, only: [:show, :edit, :update, :destroy]
   respond_to :json
@@ -21,6 +22,11 @@ class SkillsController < ApplicationController
 
   # GET /skills/1/edit
   def edit
+  end
+
+  def complete
+    @skills = Skill.where("name LIKE :prefix", prefix: "#{params[:query].scan(/[a-zA-Zа-яА-Я]+/).join}%")
+    render :index
   end
 
   # POST /skills

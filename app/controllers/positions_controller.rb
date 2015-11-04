@@ -44,8 +44,9 @@ class PositionsController < ApplicationController
   # PATCH/PUT /positions/1
   # PATCH/PUT /positions/1.json
   def update
+    skills_ids = params[:skills].map {|x| x["id"]}
     respond_to do |format|
-      if @position.update(position_params)
+      if @position.update(position_params) && @position.update_skills(skills_ids)
         format.html { redirect_to @position, notice: 'Position was successfully updated.' }
         format.json { render :show, status: :ok, location: @position }
       else

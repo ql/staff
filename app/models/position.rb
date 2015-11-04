@@ -24,4 +24,12 @@ class Position < ActiveRecord::Base
   def full_match?(other)
     skill_ids.sort == other.skill_ids.sort
   end
+
+  def update_skills(new_skills)
+    current_skills = position_skills.map(&:skill_id)
+    removed_skills = current_skills - new_skills
+    added_skills = new_skills - current_skills
+    self.position_skills.where(skill_id: removed_skills).destroy_all &&
+    added_skills.each {|id| self.position_skills.create(skill_id: id) }
+  end
 end

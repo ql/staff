@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   resources :positions do
     get 'matches', on: :member
   end
-  resources :skills
+  resources :skills do
+    get 'complete', on: :collection
+  end
   root 'index#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

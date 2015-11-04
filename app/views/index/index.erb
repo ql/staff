@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">Amazing Staff</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -29,11 +29,10 @@
           <%= render "navbar" %>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
-
         <div ng-view></div>
+<!--- template -->
          <script type="text/ng-template" id="viewSkills.htm">
-          <h2 class="sub-header">Skills</h2>
+          <h1 class="sub-header">Skills</h1>
           <button class="btn btn-default" style="float:right" data-toggle="modal" data-target="#newSkillModal">Add skill</button>
 <!-- Modal -->
 <div id="newSkillModal" class="modal fade" role="dialog">
@@ -70,12 +69,112 @@
           </div>
     </script>
 
+<!--- /template -->
      <script type="text/ng-template" id="editSkill.htm">
       <h3>Skill: {{skill.name}}</h3>
 
       <input type="text" class="form-control" placeholder="New name" ng-model="newName">
       <button ng-click="renameSkill(skill, newName);">Rename</button>
       <button ng-click="deleteSkill(skill);">Delete</button>
+    </script>
+
+
+<!--- template -->
+         <script type="text/ng-template" id="viewPositions.htm">
+          <h1 class="sub-header">Positions</h1>
+
+          <div class="table-responsive">
+          <a style="float:right" href="" ng-click="editPosition('')">Add position</a>
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <th>Valid till</th>
+                  <th>Salary</th>
+                </tr>
+                <tr ng-repeat="x in positions">
+                  <td><a href="" ng-click="editPosition(x.id);">{{x.name}}</a></td>
+                  <td>{{x.expires_at}}</td>
+                  <td>{{x.salary}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </script>
+
+<!--- /template -->
+         <script type="text/ng-template" id="editPosition.htm">
+          <h1 class="sub-header">{{position.name}}</h1>
+      <form>
+      <label for="name">Position name</label>
+      <input type="text" class="form-control" ng-model="position.name" id="name">
+      <label for="salary">Salary</label>
+      <input type="text" class="form-control" ng-model="position.salary" id="salary">
+      <label for="expires_at">Valid till</label>
+      <input type="text" class="form-control" ng-model="position.expires_at" id="expires_at">
+      <tags-input ng-model="position.skills" display-property="name" keyProperty="id" placeholder="Add skill">
+        <auto-complete source="loadSkills($query)" display-property="name" keyProperty="id"> </auto-complete>
+
+
+      </tags-input>
+      <button type="submit" class="btn btn-default" ng-click="savePosition(position)">Save</button>
+      </form>
+    </script>
+
+
+
+<!--- template -->
+         <script type="text/ng-template" id="viewApplicants.htm">
+          <h1 class="sub-header">Applicants</h1>
+
+          <div class="table-responsive">
+          <a style="float:right" href="" ng-click="editApplicant('')">Add applicant</a>
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Salary</th>
+                  <th>Email</th>
+                  <th></th>
+                </tr>
+                <tr ng-repeat="x in applicants">
+                  <td ng-click="editApplicant(x.id);">{{x.first_name}}</td>
+                  <td>{{x.last_name}}</td>
+                  <td>{{x.salary}}</td>
+                  <td>{{x.email}}</td>
+                  <td><button ng-click="viewMatches(x.id);">Match</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </script>
+
+<!--- /template -->
+         <script type="text/ng-template" id="editApplicant.htm">
+          <h1 class="sub-header">{{applicant.first_name}} {{applicant.last_name}}</h1>
+      <form>
+      <label for="first_name">First name</label>
+      <input type="text" class="form-control" ng-model="applicant.first_name" id="first_name">
+      <label for="last_name">First name</label>
+      <input type="text" class="form-control" ng-model="applicant.last_name" id="last_name">
+
+      <label for="salary">Salary</label>
+      <input type="text" class="form-control" ng-model="applicant.salary" id="salary">
+      <label for="status">Search status</label>
+      <div class="form-group">
+        <select class="form-control" name="status" ng-model="applicant.status" ng-options="x for x in ['searching', 'not_searching']"
+></select>
+
+      </div>
+
+      <tags-input ng-model="applicant.skills" display-property="name" keyProperty="id" placeholder="Add skill">
+        <auto-complete source="loadSkills($query)" display-property="name" keyProperty="id"> </auto-complete>
+
+
+      </tags-input>
+      <button type="submit" class="btn btn-default" ng-click="saveApplicant(applicant)">Save</button>
+      </form>
     </script>
         </div>
       </div>

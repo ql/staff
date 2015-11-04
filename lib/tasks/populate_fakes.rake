@@ -9,9 +9,11 @@ task :populate_fakes  => :environment do
       status: ['searching', 'not_searching'][rand(2)],
       email: Faker::Internet.email
     )
+    s = []
     (rand(3) + 2).times {
-      a.applicant_skills.new(skill: skills.sample)
+      s << skills.sample 
     }
+    s.uniq.each {|skill| a.applicant_skills.new(skill: skill) }
     a.save!
 
     p = Position.new(
@@ -20,9 +22,11 @@ task :populate_fakes  => :environment do
       contacts: "foobar",
       expires_at: Time.now + (rand(60) - 30).days
     )
-    (rand(7) + 3).times {
-      p.position_skills.new(skill: skills.sample)
+    s = []
+    (rand(3) + 2).times {
+      s << skills.sample 
     }
+    s.uniq.each {|skill| p.position_skills.new(skill: skill) }
     p.save!
   } 
 end
