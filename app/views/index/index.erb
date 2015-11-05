@@ -37,7 +37,7 @@
       <div class="modal-body">
         <form>
         <input type="text" ng-model="skill.name">
-        <div style="color:red;" ng-show="has_errors" ng-bind='errors.name'></div>
+        <div style="color:red;" ng-show="errors.name" ng-bind='errors.name'></div>
         <button ng-click="addSkill();">Save</button>
         </form>
       </div>
@@ -124,15 +124,20 @@
           <h1 class="sub-header">{{position.name}}</h1>
       <form>
       <label for="name">Position name</label>
-      <input type="text" class="form-control" ng-model="position.name" id="name" required>
+      <input type="text" class="form-control" ng-model="position.name" id="name" >
+      <div style="color:red;" ng-show="errors.name" ng-bind='errors.name'></div>
       <label for="salary">Salary</label>
-      <input type="number" min="1" class="form-control" ng-model="position.salary" id="salary" required>
+      <input type="number" min="1" class="form-control" ng-model="position.salary" id="salary" >
+      <div style="color:red;" ng-show="errors.salary" ng-bind='errors.salary'></div>
       <label for="expires_at">Valid till</label>
-      <input type="date" class="form-control" ng-model="position.expires_at" id="expires_at" required>
+      <input type="date" class="form-control" ng-model="position.expires_at" id="expires_at" >
+      <div style="color:red;" ng-show="errors.expires_at" ng-bind='errors.expires_at'></div>
       <label for="contacts">Contacts</label>
-      <textarea class="form-control" ng-model="position.contacts" id="contacts" required></textarea>
+      <textarea class="form-control" ng-model="position.contacts" id="contacts" ></textarea>
+      <div style="color:red;" ng-show="errors.contacts" ng-bind='errors.contacts'></div>
       <tags-input ng-model="position.skills" display-property="name" keyProperty="id" placeholder="Add skill">
         <auto-complete source="loadSkills($query)" display-property="name" keyProperty="id"> </auto-complete>
+      <div style="color:red;" ng-show="errors.skills" ng-bind='errors.skills'></div>
 
 
       </tags-input>
@@ -175,11 +180,14 @@
       <form>
       <label for="first_name">First name</label>
       <input type="text" class="form-control" ng-model="applicant.first_name" id="first_name">
+      <div style="color:red;" ng-show="errors.first_name" ng-bind='errors.first_name'></div>
       <label for="last_name">First name</label>
       <input type="text" class="form-control" ng-model="applicant.last_name" id="last_name">
+      <div style="color:red;" ng-show="errors.last_name" ng-bind='errors.last_name'></div>
 
       <label for="salary">Salary</label>
       <input type="number" min="1" class="form-control" ng-model="applicant.salary" id="salary">
+      <div style="color:red;" ng-show="errors.salary" ng-bind='errors.salary'></div>
       <label for="status">Search status</label>
       <div class="form-group">
         <select class="form-control" name="status" ng-model="applicant.status" ng-options="x for x in ['searching', 'not_searching']"
@@ -189,6 +197,7 @@
 
       <tags-input ng-model="applicant.skills" display-property="name" keyProperty="id" placeholder="Add skill">
         <auto-complete source="loadSkills($query)" display-property="name" keyProperty="id"> </auto-complete>
+      <div style="color:red;" ng-show="errors.skills" ng-bind='errors.skills'></div>
 
 
       </tags-input>

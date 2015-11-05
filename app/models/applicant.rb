@@ -12,7 +12,7 @@ class Applicant < ActiveRecord::Base
 
   def validate_skills
     unless applicant_skills.any?
-      errors.add(:applicant_skills, "Need to add skills")
+      errors.add(:skills, "Need to add skills")
     end
   end
 

@@ -34,7 +34,6 @@ class PositionsController < ApplicationController
       if @position.update_skills(skills_ids) && @position.save
         format.json { render :show, status: :created, location: @position }
       else
-byebug
         format.json { render json: @position.errors, status: :unprocessable_entity }
       end
     end
@@ -47,7 +46,6 @@ byebug
       if @position.update(position_params) && @position.update_skills(skills_ids)
         format.json { render :show, status: :ok, location: @position }
       else
-        byebug
         format.json { render json: @position.errors, status: :unprocessable_entity }
       end
     end

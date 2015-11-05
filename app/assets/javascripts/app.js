@@ -76,7 +76,6 @@ app.controller('ViewSkillsController', ['$scope', 'Skill', '$location', function
           angular.forEach(response.data, function(value, key) {
             $scope.errors[key] = key + ' ' + value;
           });
-          $scope.has_errors = true;
         }
       );
       
@@ -130,22 +129,35 @@ app.controller('ViewPositionsController', ['$scope', 'Position', '$location', fu
 }]);
 
 app.controller('EditPositionController', ['$scope', 'Position', 'Skill', '$routeParams', '$location', function($scope, Position, Skill, $routeParams, $location) {
+  $scope.errors = {};
   if ($routeParams.id) {
     $scope.position = Position.get({id: $routeParams.id});
     $scope.savePosition = function(position) {
       Position.update(
         {id: position.id},
         position,
-        function() { $location.path('/viewPositions/'); },
-        function() { alert("Server error :("); }
+        function() {
+          $location.path('/viewPositions/');
+        },
+        function(response) {
+          angular.forEach(response.data, function(value, key) {
+            $scope.errors[key] = key + ' ' + value;
+          });
+        }
       );
     };
   } else {
     $scope.position = new Position();
     $scope.savePosition = function(position) {
       position.$save(null, 
-        function() { $location.path('/viewPositions/'); },
-        function() { alert("Server error :("); }
+        function() {
+          $location.path('/viewPositions/');
+        },
+        function(response) {
+          angular.forEach(response.data, function(value, key) {
+            $scope.errors[key] = key + ' ' + value;
+          });
+        }
       );
     };
   }
@@ -175,22 +187,35 @@ app.controller('EditApplicantController', ['$scope', 'Applicant', 'Skill', '$rou
   if ($routeParams.id) {
     $scope.applicant = Applicant.get({id: $routeParams.id});
     $scope.saveApplicant = function(applicant) {
+      $scope.errors = {};
       Applicant.update(
         {id: applicant.id},
         applicant,
-        function() { $location.path('/viewApplicants/'); },
-        function() { alert("Server error :("); }
+        function() {
+          $location.path('/viewApplicants/');
+        },
+        function(response) {
+          angular.forEach(response.data, function(value, key) {
+            $scope.errors[key] = key + ' ' + value;
+          });
+        }
       );
     };
   } else {
     $scope.applicant = new Applicant();
     $scope.applicant.status = "searching";
     $scope.saveApplicant = function(applicant) {
+      $scope.errors = {};
       applicant.$save(
         null,
-        null,
-        function() { $location.path('/viewApplicants/'); },
-        function() { alert("Server error :("); }
+        function() {
+          $location.path('/viewApplicants/');
+        },
+        function(response) {
+          angular.forEach(response.data, function(value, key) {
+            $scope.errors[key] = key + ' ' + value;
+          });
+        }
       );
     };
   }
