@@ -4,6 +4,7 @@ class CreateSkills < ActiveRecord::Migration
       t.string :name
 
       t.timestamps null: false
+      t.index :name, unique: true
     end
   end
 end

@@ -1,5 +1,6 @@
 class PositionsController < ApplicationController
   before_action :set_position, only: [:show, :matches, :edit, :update, :destroy]
+  respond_to :json
 
   # GET /positions
   # GET /positions.json
@@ -29,13 +30,11 @@ class PositionsController < ApplicationController
   # POST /positions.json
   def create
     @position = Position.new(position_params)
-
     respond_to do |format|
-      if @position.save
-        format.html { redirect_to @position, notice: 'Position was successfully created.' }
+      if @position.update_skills(skills_ids) && @position.save
         format.json { render :show, status: :created, location: @position }
       else
-        format.html { render :new }
+byebug
         format.json { render json: @position.errors, status: :unprocessable_entity }
       end
     end
@@ -44,13 +43,11 @@ class PositionsController < ApplicationController
   # PATCH/PUT /positions/1
   # PATCH/PUT /positions/1.json
   def update
-    skills_ids = params[:skills].map {|x| x["id"]}
     respond_to do |format|
       if @position.update(position_params) && @position.update_skills(skills_ids)
-        format.html { redirect_to @position, notice: 'Position was successfully updated.' }
         format.json { render :show, status: :ok, location: @position }
       else
-        format.html { render :edit }
+        byebug
         format.json { render json: @position.errors, status: :unprocessable_entity }
       end
     end
@@ -61,7 +58,6 @@ class PositionsController < ApplicationController
   def destroy
     @position.destroy
     respond_to do |format|
-      format.html { redirect_to positions_url, notice: 'Position was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

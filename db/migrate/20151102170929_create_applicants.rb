@@ -6,7 +6,7 @@ class CreateApplicants < ActiveRecord::Migration
       t.string :middle_name
       t.string :phone
       t.string :email
-      t.decimal :salary
+      t.float :salary
       t.string :status
 
       t.timestamps null: false

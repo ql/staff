@@ -3,6 +3,7 @@ class Applicant < ActiveRecord::Base
   has_many :skills, through: :applicant_skills
   validates :first_name, :last_name, :salary, :status, presence: true
   validates :status, inclusion: { in: %w{searching not_searching}}
+  validates_uniqueness_of :email, :phone
 
   validate :validate_skills
   validate :has_contacts

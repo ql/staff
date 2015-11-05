@@ -41,12 +41,15 @@ app.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'viewPositions.htm', controller: 'ViewPositionsController'
      }).
      when('/viewApplicants/:id/viewMatches', {
-        templateUrl: 'viewPositions.htm', controller: 'MatchedPositionsController'
+        templateUrl: 'viewPositionsMatched.htm', controller: 'MatchedPositionsController'
      }).
      when('/viewApplicants', {
         templateUrl: 'viewApplicants.htm', controller: 'ViewApplicantsController'
      }).
-     when('/editApplicant/:id', {
+     when('/editApplicants/:id', {
+        templateUrl: 'editApplicant.htm', controller: 'EditApplicantController'
+     }).
+     when('/editApplicants/', {
         templateUrl: 'editApplicant.htm', controller: 'EditApplicantController'
      }).
      when('/viewMatchedPositions', {
@@ -61,11 +64,22 @@ app.config(['$routeProvider', function($routeProvider) {
 app.controller('ViewSkillsController', ['$scope', 'Skill', '$location', function($scope, Skill, $location) {
     $scope.skills = Skill.query();
     $scope.skill = new Skill();
+    $scope.errors = {};
 
     $scope.addSkill = function() {
-      $scope.skill.$save();
-      $location.path('/viewSkills/');
-      $('#newSkillModal').modal('hide');
+      $scope.skill.$save(null, 
+        function() {
+          $location.path('/viewSkills/');
+          $('#newSkillModal').modal('hide');
+        },
+        function(response) {
+          angular.forEach(response.data, function(value, key) {
+            $scope.errors[key] = key + ' ' + value;
+          });
+          $scope.has_errors = true;
+        }
+      );
+      
     };
 
     $scope.editSkill = function(skill) {
@@ -118,19 +132,23 @@ app.controller('ViewPositionsController', ['$scope', 'Position', '$location', fu
 app.controller('EditPositionController', ['$scope', 'Position', 'Skill', '$routeParams', '$location', function($scope, Position, Skill, $routeParams, $location) {
   if ($routeParams.id) {
     $scope.position = Position.get({id: $routeParams.id});
+    $scope.savePosition = function(position) {
+      Position.update(
+        {id: position.id},
+        position,
+        function() { $location.path('/viewPositions/'); },
+        function() { alert("Server error :("); }
+      );
+    };
   } else {
     $scope.position = new Position();
+    $scope.savePosition = function(position) {
+      position.$save(null, 
+        function() { $location.path('/viewPositions/'); },
+        function() { alert("Server error :("); }
+      );
+    };
   }
-
-  $scope.savePosition = function(position) {
-    Position.update(
-      {id: position.id},
-      position,
-      function() { $location.path('/viewPositions/'); },
-      function() { alert("Server error :("); }
-    );
-    
-  };
 
   $scope.loadSkills = function(query) {
     return Skill.complete({query: query}).$promise;
@@ -156,8 +174,25 @@ app.controller('ViewApplicantsController', ['$scope', 'Applicant', '$location', 
 app.controller('EditApplicantController', ['$scope', 'Applicant', 'Skill', '$routeParams', '$location', function($scope, Applicant, Skill, $routeParams, $location) {
   if ($routeParams.id) {
     $scope.applicant = Applicant.get({id: $routeParams.id});
+    $scope.saveApplicant = function(applicant) {
+      Applicant.update(
+        {id: applicant.id},
+        applicant,
+        function() { $location.path('/viewApplicants/'); },
+        function() { alert("Server error :("); }
+      );
+    };
   } else {
     $scope.applicant = new Applicant();
+    $scope.applicant.status = "searching";
+    $scope.saveApplicant = function(applicant) {
+      applicant.$save(
+        null,
+        null,
+        function() { $location.path('/viewApplicants/'); },
+        function() { alert("Server error :("); }
+      );
+    };
   }
   $scope.applicants = Applicant.query();
   
@@ -173,14 +208,6 @@ app.controller('EditApplicantController', ['$scope', 'Applicant', 'Skill', '$rou
     return Skill.complete({query: query}).$promise;
   };
 
-  $scope.saveApplicant = function(applicant) {
-    Applicant.update(
-      {id: applicant.id},
-      applicant,
-      function() { $location.path('/viewApplicants/'); },
-      function() { alert("Server error :("); }
-    );
-  };
 
 }]);
 app.controller('MatchedPositionsController', ['$scope', 'Applicant', 'Skill', '$routeParams', '$location', function($scope, Applicant, Skill, $routeParams, $location) {

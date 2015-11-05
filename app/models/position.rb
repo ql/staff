@@ -25,11 +25,16 @@ class Position < ActiveRecord::Base
     skill_ids.sort == other.skill_ids.sort
   end
 
-  def update_skills(new_skills)
+  def build_updated_skills(new_skills)
     current_skills = position_skills.map(&:skill_id)
     removed_skills = current_skills - new_skills
     added_skills = new_skills - current_skills
     self.position_skills.where(skill_id: removed_skills).destroy_all &&
-    added_skills.each {|id| self.position_skills.create(skill_id: id) }
+      added_skills.each {|id| self.position_skills.new(skill_id: id) }
+  end
+
+  def update_skills(new_skills)
+    build_updated_skills(new_skills)
+    self.position_skills.all?(&:save)
   end
 end

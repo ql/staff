@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20151102171230) do
     t.string   "middle_name"
     t.string   "phone"
     t.string   "email"
-    t.decimal  "salary"
+    t.float    "salary"
     t.string   "status"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20151102171230) do
   create_table "positions", force: :cascade do |t|
     t.string   "name"
     t.date     "expires_at"
-    t.decimal  "salary"
+    t.float    "salary"
     t.text     "contacts"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

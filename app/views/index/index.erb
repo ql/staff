@@ -10,16 +10,6 @@
           </button>
           <a class="navbar-brand" href="#">Amazing Staff</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Help</a></li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>
       </div>
     </nav>
 
@@ -32,8 +22,8 @@
         <div ng-view></div>
 <!--- template -->
          <script type="text/ng-template" id="viewSkills.htm">
+          <button class="btn btn-default" style="float:right" data-toggle="modal" data-target="#newSkillModal">Add</button>
           <h1 class="sub-header">Skills</h1>
-          <button class="btn btn-default" style="float:right" data-toggle="modal" data-target="#newSkillModal">Add skill</button>
 <!-- Modal -->
 <div id="newSkillModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -47,6 +37,7 @@
       <div class="modal-body">
         <form>
         <input type="text" ng-model="skill.name">
+        <div style="color:red;" ng-show="has_errors" ng-bind='errors.name'></div>
         <button ng-click="addSkill();">Save</button>
         </form>
       </div>
@@ -81,10 +72,10 @@
 
 <!--- template -->
          <script type="text/ng-template" id="viewPositions.htm">
-          <h1 class="sub-header">Positions</h1>
+          <h1>Positions</h1>
 
           <div class="table-responsive">
-          <a style="float:right" href="" ng-click="editPosition('')">Add position</a>
+          <a style="float:right" href="" ng-click="editPosition('')">Add</a>
             <table class="table table-striped">
               <tbody>
                 <tr>
@@ -101,17 +92,45 @@
             </table>
           </div>
     </script>
+<!--- template -->
+         <script type="text/ng-template" id="viewPositionsMatched.htm">
+          <h1 class="sub-header">Positions matching {{applicant.first_name}} {{applicant.last_name}}</h1>
+          <h3>Skills: <span ng-repeat="skill in applicant.skills">{{skill.name}}, </span></h3>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <th>Valid till</th>
+                  <th>Salary</th>
+                  <th>Skills</th>
+                </tr>
+                <tr ng-repeat="x in positions">
+                  <td><a href="/#/editPosition/{{x.id}}">{{x.name}}</a></td>
+                  <td>{{x.expires_at}}</td>
+                  <td>{{x.salary}}</td>
+                  <td><span ng-repeat="skill in x.skills">{{skill.name}}, </span></td>
+
+                  <td><a href="/#/viewPositions/{{x.id}}/viewMatches">Match</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </script>
+
 
 <!--- /template -->
          <script type="text/ng-template" id="editPosition.htm">
           <h1 class="sub-header">{{position.name}}</h1>
       <form>
       <label for="name">Position name</label>
-      <input type="text" class="form-control" ng-model="position.name" id="name">
+      <input type="text" class="form-control" ng-model="position.name" id="name" required>
       <label for="salary">Salary</label>
-      <input type="text" class="form-control" ng-model="position.salary" id="salary">
+      <input type="number" min="1" class="form-control" ng-model="position.salary" id="salary" required>
       <label for="expires_at">Valid till</label>
-      <input type="text" class="form-control" ng-model="position.expires_at" id="expires_at">
+      <input type="date" class="form-control" ng-model="position.expires_at" id="expires_at" required>
+      <label for="contacts">Contacts</label>
+      <textarea class="form-control" ng-model="position.contacts" id="contacts" required></textarea>
       <tags-input ng-model="position.skills" display-property="name" keyProperty="id" placeholder="Add skill">
         <auto-complete source="loadSkills($query)" display-property="name" keyProperty="id"> </auto-complete>
 
@@ -128,7 +147,7 @@
           <h1 class="sub-header">Applicants</h1>
 
           <div class="table-responsive">
-          <a style="float:right" href="" ng-click="editApplicant('')">Add applicant</a>
+          <a style="float:right" href="/#/editApplicants/">Add applicant</a>
             <table class="table table-striped">
               <tbody>
                 <tr>
@@ -143,7 +162,7 @@
                   <td>{{x.last_name}}</td>
                   <td>{{x.salary}}</td>
                   <td>{{x.email}}</td>
-                  <td><button ng-click="viewMatches(x.id);">Match</button></td>
+                  <td><a href="/#/viewApplicants/{{x.id}}/viewMatches">Matching positions</a></td>
                 </tr>
               </tbody>
             </table>
@@ -160,7 +179,7 @@
       <input type="text" class="form-control" ng-model="applicant.last_name" id="last_name">
 
       <label for="salary">Salary</label>
-      <input type="text" class="form-control" ng-model="applicant.salary" id="salary">
+      <input type="number" min="1" class="form-control" ng-model="applicant.salary" id="salary">
       <label for="status">Search status</label>
       <div class="form-group">
         <select class="form-control" name="status" ng-model="applicant.status" ng-options="x for x in ['searching', 'not_searching']"

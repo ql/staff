@@ -1,6 +1,7 @@
 task :populate_fakes  => :environment do
-  size = 50
-  skills = (0...size/2).map {|_| s = Skill.new(name: Faker::Internet.slug); s.save!; s}
+  size = 200
+  skills = (0...50).map {|_| s = Skill.new(name: Faker::Internet.slug); s.save!; s}
+  p 'skills created'
   size.times {
     a = Applicant.new(
       first_name: Faker::Name.first_name,

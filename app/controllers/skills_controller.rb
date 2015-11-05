@@ -1,12 +1,11 @@
 # encoding: utf-8
 class SkillsController < ApplicationController
   before_action :set_skill, only: [:show, :edit, :update, :destroy]
-  respond_to :json
 
   # GET /skills
   # GET /skills.json
   def index
-    @skills = Skill.all
+    @skills = Skill.all.order(name: :asc)
     respond_with(:json)
   end
 

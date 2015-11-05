@@ -1,5 +1,6 @@
 class ApplicantsController < ApplicationController
   before_action :set_applicant, only: [:show, :matches, :edit, :update, :destroy]
+  respond_to :json
 
   # GET /applicants
   # GET /applicants.json
@@ -32,10 +33,8 @@ class ApplicantsController < ApplicationController
 
     respond_to do |format|
       if @applicant.save
-        format.html { redirect_to @applicant, notice: 'Applicant was successfully created.' }
         format.json { render :show, status: :created, location: @applicant }
       else
-        format.html { render :new }
         format.json { render json: @applicant.errors, status: :unprocessable_entity }
       end
     end
@@ -47,10 +46,8 @@ class ApplicantsController < ApplicationController
     skills_ids = params[:skills].map {|x| x["id"]}
     respond_to do |format|
       if @applicant.update(applicant_params) && @applicant.update_skills(skills_ids)
-        format.html { redirect_to @applicant, notice: 'Applicant was successfully updated.' }
         format.json { render :show, status: :ok, location: @applicant }
       else
-        format.html { render :edit }
         format.json { render json: @applicant.errors, status: :unprocessable_entity }
       end
     end
@@ -61,7 +58,6 @@ class ApplicantsController < ApplicationController
   def destroy
     @applicant.destroy
     respond_to do |format|
-      format.html { redirect_to applicants_url, notice: 'Applicant was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -74,6 +70,6 @@ class ApplicantsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def applicant_params
-      params.require(:applicant).permit(:name, :phone, :email, :status, :salary)
+      params.require(:applicant).permit(:first_name, :last_name, :phone, :email, :status, :salary)
     end
 end
