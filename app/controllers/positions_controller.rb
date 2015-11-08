@@ -14,7 +14,7 @@ class PositionsController < ApplicationController
   end
 
   def matches
-    @matches = @position.matches
+    @matches = @position.matches.order('salary desc')
   end
 
   # GET /positions/new

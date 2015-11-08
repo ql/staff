@@ -5,7 +5,8 @@ class Position < ActiveRecord::Base
 
   validate :validate_skills
 
-  default_scope { where("expires_at > ?", Time.now).order('salary desc') }
+  scope :effective, -> { where("expires_at > ?", Time.now) }
+
 
   def validate_skills
     unless position_skills.any?
@@ -18,7 +19,7 @@ class Position < ActiveRecord::Base
   end
 
   def matches
-    Applicant.where(id: ApplicantSkill.where(skill_id: skill_ids).map(&:applicant_id))
+    Applicant.looking_for_job.where(id: ApplicantSkill.where(skill_id: skill_ids).map(&:applicant_id))
   end
 
   def full_match?(other)

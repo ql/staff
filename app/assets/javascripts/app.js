@@ -11,7 +11,7 @@ app.factory('Skill', ['$resource', function($resource) {
 app.factory('Position', ['$resource', function($resource) {
   return $resource('/positions/:id', null, {
     'update': { method:'PUT'},
-    'matches': { method: 'GET', isArray: true}
+    'matches': { method: 'GET', url: 'positions/:id/matches', isArray: true}
   });
 }]);
 
@@ -42,6 +42,9 @@ app.config(['$routeProvider', function($routeProvider) {
      }).
      when('/viewApplicants/:id/viewMatches', {
         templateUrl: 'viewPositionsMatched.htm', controller: 'MatchedPositionsController'
+     }).
+     when('/viewPositions/:id/viewMatches', {
+        templateUrl: 'viewApplicantsMatched.htm', controller: 'MatchedApplicantsController'
      }).
      when('/viewApplicants', {
         templateUrl: 'viewApplicants.htm', controller: 'ViewApplicantsController'
@@ -238,4 +241,8 @@ app.controller('EditApplicantController', ['$scope', 'Applicant', 'Skill', '$rou
 app.controller('MatchedPositionsController', ['$scope', 'Applicant', 'Skill', '$routeParams', '$location', function($scope, Applicant, Skill, $routeParams, $location) {
   $scope.applicant = Applicant.get({id: $routeParams.id});
   $scope.positions = Applicant.matches({id: $routeParams.id});
+}]);
+app.controller('MatchedApplicantsController', ['$scope', 'Position', 'Skill', '$routeParams', '$location', function($scope, Position, Skill, $routeParams, $location) {
+  $scope.position = Position.get({id: $routeParams.id});
+  $scope.applicants = Position.matches({id: $routeParams.id});
 }]);

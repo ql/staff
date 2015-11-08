@@ -8,7 +8,7 @@ class Applicant < ActiveRecord::Base
   validate :validate_skills
   validate :has_contacts
 
-  default_scope { where(status: 'searching').order('salary asc') }
+  scope :looking_for_job, -> { where(status: 'searching') }
 
   def validate_skills
     unless applicant_skills.any?
@@ -28,7 +28,7 @@ class Applicant < ActiveRecord::Base
   end
 
   def matches
-    Position.where(id: PositionSkill.where(skill_id: skill_ids).map(&:position_id))
+    Position.effective.where(id: PositionSkill.where(skill_id: skill_ids).map(&:position_id))
   end
 
   def full_match?(other)

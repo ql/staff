@@ -82,11 +82,13 @@
                   <th>Name</th>
                   <th>Valid till</th>
                   <th>Salary</th>
+                  <th></th>
                 </tr>
                 <tr ng-repeat="x in positions">
                   <td><a href="" ng-click="editPosition(x.id);">{{x.name}}</a></td>
                   <td>{{x.expires_at}}</td>
                   <td>{{x.salary}}</td>
+                  <td><a href="/#/viewPositions/{{x.id}}/viewMatches">Matching applicants</a></td>
                 </tr>
               </tbody>
             </table>
@@ -168,6 +170,33 @@
                   <td>{{x.salary}}</td>
                   <td>{{x.email}}</td>
                   <td><a href="/#/viewApplicants/{{x.id}}/viewMatches">Matching positions</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </script>
+
+<!--- template -->
+         <script type="text/ng-template" id="viewApplicantsMatched.htm">
+          <h1 class="sub-header">Applicants matching {{position.name}}</h1>
+          <h3>Skills: <span ng-repeat="skill in position.skills">{{skill.name}}, </span></h3>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Salary</th>
+                  <th>Email</th>
+                  <th>Skills</th>
+                </tr>
+                <tr ng-repeat="x in applicants">
+                  <td ng-click="editApplicant(x.id);">{{x.first_name}}</td>
+                  <td>{{x.last_name}}</td>
+                  <td>{{x.salary}}</td>
+                  <td>{{x.email}}</td>
+                  <td><span ng-repeat="skill in x.skills">{{skill.name}}, </span></td>
                 </tr>
               </tbody>
             </table>
