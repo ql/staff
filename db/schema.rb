@@ -24,15 +24,13 @@ ActiveRecord::Schema.define(version: 20151102171230) do
   add_index "applicant_skills", ["skill_id", "applicant_id"], name: "index_applicant_skills_on_skill_id_and_applicant_id", unique: true, using: :btree
 
   create_table "applicants", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "middle_name"
+    t.string   "name"
     t.string   "phone"
     t.string   "email"
     t.float    "salary"
     t.string   "status"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "position_skills", force: :cascade do |t|

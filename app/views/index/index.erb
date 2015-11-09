@@ -96,7 +96,7 @@
     </script>
 <!--- template -->
          <script type="text/ng-template" id="viewPositionsMatched.htm">
-          <h1 class="sub-header">Вакансии подходящие для {{applicant.first_name}} {{applicant.last_name}}</h1>
+          <h1 class="sub-header">Вакансии подходящие для {{applicant.name}}</h1>
           <h3>Навыки: <span ng-repeat="skill in applicant.skills">{{skill.name}}, </span></h3>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -162,7 +162,7 @@
                   <th></th>
                 </tr>
                 <tr ng-repeat="x in applicants">
-                  <td><a href="/#/editApplicants/{{x.id}}">{{x.last_name}} {{x.first_name}}</a></td>
+                  <td><a href="/#/editApplicants/{{x.id}}"> {{x.name}}</a></td>
                   <td>{{x.salary}}</td>
                   <td>{{x.email}}</td>
                   <td><a href="/#/viewApplicants/{{x.id}}/viewMatches">Подходящие вакансии</a></td>
@@ -187,8 +187,7 @@
                   <th>Навыки</th>
                 </tr>
                 <tr ng-repeat="x in applicants">
-                  <td><a href="/#/editApplicants/{{x.id}}">{{x.last_name}} {{x.first_name}}</a></td>
-                  <td>{{x.last_name}}</td>
+                  <td><a href="/#/editApplicants/{{x.id}}">{{x.name}}</a></td>
                   <td>{{x.salary}}</td>
                   <td>{{x.email}}</td>
                   <td><span ng-repeat="skill in x.skills">{{skill.name}}, </span></td>
@@ -200,14 +199,11 @@
 
 <!--- /template -->
          <script type="text/ng-template" id="editApplicant.htm">
-          <h1 class="sub-header">{{applicant.first_name}} {{applicant.last_name}}</h1>
+          <h1 class="sub-header">{{applicant.name}}</h1>
       <form>
-      <label for="first_name">Имя</label>
-      <input type="text" class="form-control" ng-model="applicant.first_name" id="first_name">
-      <div style="color:red;" ng-show="errors.first_name" ng-bind='errors.first_name'></div>
-      <label for="last_name">Фамилия</label>
-      <input type="text" class="form-control" ng-model="applicant.last_name" id="last_name">
-      <div style="color:red;" ng-show="errors.last_name" ng-bind='errors.last_name'></div>
+      <label for="name">Имя</label>
+      <input type="text" class="form-control" ng-model="applicant.name" id="name">
+      <div style="color:red;" ng-show="errors.name" ng-bind='errors.name'></div>
 
       <label for="salary">Оклад</label>
       <input type="number" min="1" class="form-control" ng-model="applicant.salary" id="salary">

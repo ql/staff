@@ -5,7 +5,7 @@ class ApplicantsController < ApplicationController
   # GET /applicants
   # GET /applicants.json
   def index
-    @applicants = Applicant.all.order("last_name asc")
+    @applicants = Applicant.all
   end
 
   # GET /applicants/1
@@ -70,6 +70,6 @@ class ApplicantsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def applicant_params
-      params.require(:applicant).permit(:first_name, :last_name, :phone, :email, :status, :salary)
+      params.require(:applicant).permit(:name, :phone, :email, :status, :salary)
     end
 end

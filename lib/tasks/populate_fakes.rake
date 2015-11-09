@@ -1,11 +1,12 @@
 task :populate_fakes  => :environment do
+  Faker::Config.locale = :ru
   size = 200
   skills = (0...50).map {|_| s = Skill.new(name: Faker::Internet.slug); s.save!; s}
   p 'skills created'
   size.times {
+    name = [Faker::Name.male_first_name, Faker::Name.male_middle_name, Faker::Name.male_last_name].join(" ")
     a = Applicant.new(
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
+      name: name,
       salary: ((rand * 100 + 10).to_i * 1000),
       status: ['searching', 'not_searching'][rand(2)],
       email: Faker::Internet.email,

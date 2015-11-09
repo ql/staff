@@ -1,12 +1,14 @@
+# encoding: utf-8
 class Applicant < ActiveRecord::Base
   has_many :applicant_skills
   has_many :skills, through: :applicant_skills
-  validates :first_name, :last_name, :salary, :status, presence: true
+  validates :name, :salary, :status, presence: true
   validates :status, inclusion: { in: %w{searching not_searching}}
   validates_uniqueness_of :email, :phone
 
   validate :validate_skills
   validate :has_contacts
+  validate :name_format
 
   scope :looking_for_job, -> { where(status: 'searching') }
 
@@ -20,6 +22,17 @@ class Applicant < ActiveRecord::Base
     unless email || phone
       errors.add(:email, "Email required")
       errors.add(:phone, "Phone required")
+    end
+  end
+
+  def name_format
+    name_parts = name.split(/\s/)
+    unless name_parts.size == 3
+      errors.add(:name, "Неверный формат: имя должно состоять из трех слов")
+    end
+
+    unless name_parts.all? {|part| part =~ /^[а-яА-ЯёЁ-]+$/}
+      errors.add(:name, "Неверный формат: имя может включать в себя только кириллические буквы")
     end
   end
 
