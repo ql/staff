@@ -8,7 +8,8 @@ task :populate_fakes  => :environment do
       last_name: Faker::Name.last_name,
       salary: ((rand * 100 + 10).to_i * 1000),
       status: ['searching', 'not_searching'][rand(2)],
-      email: Faker::Internet.email
+      email: Faker::Internet.email,
+      phone: Faker::PhoneNumber.phone_number
     )
     s = []
     (rand(3) + 2).times {

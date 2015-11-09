@@ -57,4 +57,6 @@ ActiveRecord::Schema.define(version: 20151102171230) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "skills", ["name"], name: "index_skills_on_name", unique: true, using: :btree
+
 end
