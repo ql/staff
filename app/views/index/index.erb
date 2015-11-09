@@ -22,8 +22,8 @@
         <div ng-view></div>
 <!--- template -->
          <script type="text/ng-template" id="viewSkills.htm">
-          <button class="btn btn-default" style="float:right" data-toggle="modal" data-target="#newSkillModal">Add</button>
-          <h1 class="sub-header">Skills</h1>
+          <button class="btn btn-default" style="float:right" data-toggle="modal" data-target="#newSkillModal">Добавить</button>
+          <h1 class="sub-header">Навыки</h1>
 <!-- Modal -->
 <div id="newSkillModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -32,13 +32,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add skill</h4>
+        <h4 class="modal-title">Добавить</h4>
       </div>
       <div class="modal-body">
         <form>
         <input type="text" ng-model="skill.name">
         <div style="color:red;" ng-show="errors.name" ng-bind='errors.name'></div>
-        <button ng-click="addSkill();">Save</button>
+        <button ng-click="addSkill();">Сохранить</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -65,30 +65,30 @@
       <h3>Skill: {{skill.name}}</h3>
 
       <input type="text" class="form-control" placeholder="New name" ng-model="newName">
-      <button ng-click="renameSkill(skill, newName);">Rename</button>
-      <button ng-click="deleteSkill(skill);">Delete</button>
+      <button ng-click="renameSkill(skill, newName);">Переименовать</button>
+      <button ng-click="deleteSkill(skill);">Удалить</button>
     </script>
 
 
 <!--- template -->
          <script type="text/ng-template" id="viewPositions.htm">
-          <h1>Positions</h1>
+          <h1>Вакансии</h1>
 
           <div class="table-responsive">
-          <a style="float:right" href="" ng-click="editPosition('')">Add</a>
+          <a style="float:right" href="" ng-click="editPosition('')">Добавить</a>
             <table class="table table-striped">
               <tbody>
                 <tr>
-                  <th>Name</th>
-                  <th>Valid till</th>
-                  <th>Salary</th>
+                  <th>Название</th>
+                  <th>Срок действия</th>
+                  <th>Оклад</th>
                   <th></th>
                 </tr>
                 <tr ng-repeat="x in positions">
                   <td><a href="" ng-click="editPosition(x.id);">{{x.name}}</a></td>
                   <td>{{x.expires_at}}</td>
                   <td>{{x.salary}}</td>
-                  <td><a href="/#/viewPositions/{{x.id}}/viewMatches">Matching applicants</a></td>
+                  <td><a href="/#/viewPositions/{{x.id}}/viewMatches">Подходящие кандидаты</a></td>
                 </tr>
               </tbody>
             </table>
@@ -96,24 +96,22 @@
     </script>
 <!--- template -->
          <script type="text/ng-template" id="viewPositionsMatched.htm">
-          <h1 class="sub-header">Positions matching {{applicant.first_name}} {{applicant.last_name}}</h1>
-          <h3>Skills: <span ng-repeat="skill in applicant.skills">{{skill.name}}, </span></h3>
+          <h1 class="sub-header">Вакансии подходящие для {{applicant.first_name}} {{applicant.last_name}}</h1>
+          <h3>Навыки: <span ng-repeat="skill in applicant.skills">{{skill.name}}, </span></h3>
           <div class="table-responsive">
             <table class="table table-striped">
               <tbody>
                 <tr>
-                  <th>Name</th>
-                  <th>Valid till</th>
-                  <th>Salary</th>
-                  <th>Skills</th>
+                  <th>Название</th>
+                  <th>Срок действия</th>
+                  <th>Оклад</th>
+                  <th>Навыки</th>
                 </tr>
                 <tr ng-repeat="x in positions">
                   <td><a href="/#/editPosition/{{x.id}}">{{x.name}}</a></td>
                   <td>{{x.expires_at}}</td>
                   <td>{{x.salary}}</td>
                   <td><span ng-repeat="skill in x.skills">{{skill.name}}, </span></td>
-
-                  <td><a href="/#/viewPositions/{{x.id}}/viewMatches">Match</a></td>
                 </tr>
               </tbody>
             </table>
@@ -125,19 +123,19 @@
          <script type="text/ng-template" id="editPosition.htm">
           <h1 class="sub-header">{{position.name}}</h1>
       <form>
-      <label for="name">Position name</label>
+      <label for="name">Название</label>
       <input type="text" class="form-control" ng-model="position.name" id="name" >
       <div style="color:red;" ng-show="errors.name" ng-bind='errors.name'></div>
-      <label for="salary">Salary</label>
+      <label for="salary">Оклад</label>
       <input type="number" min="1" class="form-control" ng-model="position.salary" id="salary" >
       <div style="color:red;" ng-show="errors.salary" ng-bind='errors.salary'></div>
-      <label for="expires_at">Valid till</label>
+      <label for="expires_at">Срок действия</label>
       <input type="date" class="form-control" ng-model="position.expires_at" id="expires_at" >
       <div style="color:red;" ng-show="errors.expires_at" ng-bind='errors.expires_at'></div>
-      <label for="contacts">Contacts</label>
+      <label for="contacts">Контактная информация</label>
       <textarea class="form-control" ng-model="position.contacts" id="contacts" ></textarea>
       <div style="color:red;" ng-show="errors.contacts" ng-bind='errors.contacts'></div>
-      <tags-input ng-model="position.skills" display-property="name" keyProperty="id" placeholder="Add skill">
+      <tags-input ng-model="position.skills" display-property="name" keyProperty="id" placeholder="Добавить навык">
         <auto-complete source="loadSkills($query)" display-property="name" keyProperty="id"> </auto-complete>
       <div style="color:red;" ng-show="errors.skills" ng-bind='errors.skills'></div>
 
@@ -151,25 +149,23 @@
 
 <!--- template -->
          <script type="text/ng-template" id="viewApplicants.htm">
-          <h1 class="sub-header">Applicants</h1>
+          <h1 class="sub-header">Соискатели</h1>
 
           <div class="table-responsive">
-          <a style="float:right" href="/#/editApplicants/">Add applicant</a>
+          <a style="float:right" href="/#/editApplicants/">Добавить</a>
             <table class="table table-striped">
               <tbody>
                 <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Salary</th>
+                  <th>Имя</th>
+                  <th>Оклад</th>
                   <th>Email</th>
                   <th></th>
                 </tr>
                 <tr ng-repeat="x in applicants">
-                  <td ng-click="editApplicant(x.id);">{{x.first_name}}</td>
-                  <td>{{x.last_name}}</td>
+                  <td><a href="/#/editApplicants/{{x.id}}">{{x.last_name}} {{x.first_name}}</a></td>
                   <td>{{x.salary}}</td>
                   <td>{{x.email}}</td>
-                  <td><a href="/#/viewApplicants/{{x.id}}/viewMatches">Matching positions</a></td>
+                  <td><a href="/#/viewApplicants/{{x.id}}/viewMatches">Подходящие вакансии</a></td>
                 </tr>
               </tbody>
             </table>
@@ -178,21 +174,20 @@
 
 <!--- template -->
          <script type="text/ng-template" id="viewApplicantsMatched.htm">
-          <h1 class="sub-header">Applicants matching {{position.name}}</h1>
+          <h1 class="sub-header">Соискатели подходящие для вакансии {{position.name}}</h1>
           <h3>Skills: <span ng-repeat="skill in position.skills">{{skill.name}}, </span></h3>
 
           <div class="table-responsive">
             <table class="table table-striped">
               <tbody>
                 <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Salary</th>
+                  <th>Имя</th>
+                  <th>Оклад</th>
                   <th>Email</th>
-                  <th>Skills</th>
+                  <th>Навыки</th>
                 </tr>
                 <tr ng-repeat="x in applicants">
-                  <td ng-click="editApplicant(x.id);">{{x.first_name}}</td>
+                  <td><a href="/#/editApplicants/{{x.id}}">{{x.last_name}} {{x.first_name}}</a></td>
                   <td>{{x.last_name}}</td>
                   <td>{{x.salary}}</td>
                   <td>{{x.email}}</td>
@@ -207,17 +202,17 @@
          <script type="text/ng-template" id="editApplicant.htm">
           <h1 class="sub-header">{{applicant.first_name}} {{applicant.last_name}}</h1>
       <form>
-      <label for="first_name">First name</label>
+      <label for="first_name">Имя</label>
       <input type="text" class="form-control" ng-model="applicant.first_name" id="first_name">
       <div style="color:red;" ng-show="errors.first_name" ng-bind='errors.first_name'></div>
-      <label for="last_name">First name</label>
+      <label for="last_name">Фамилия</label>
       <input type="text" class="form-control" ng-model="applicant.last_name" id="last_name">
       <div style="color:red;" ng-show="errors.last_name" ng-bind='errors.last_name'></div>
 
-      <label for="salary">Salary</label>
+      <label for="salary">Оклад</label>
       <input type="number" min="1" class="form-control" ng-model="applicant.salary" id="salary">
       <div style="color:red;" ng-show="errors.salary" ng-bind='errors.salary'></div>
-      <label for="status">Search status</label>
+      <label for="status">Статус</label>
       <div class="form-group">
         <select class="form-control" name="status" ng-model="applicant.status" ng-options="x for x in ['searching', 'not_searching']"
 ></select>
@@ -230,7 +225,7 @@
 
 
       </tags-input>
-      <button type="submit" class="btn btn-default" ng-click="saveApplicant(applicant)">Save</button>
+      <button type="submit" class="btn btn-default" ng-click="saveApplicant(applicant)">Сохранить</button>
       </form>
     </script>
         </div>

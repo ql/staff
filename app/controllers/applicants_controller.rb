@@ -5,7 +5,7 @@ class ApplicantsController < ApplicationController
   # GET /applicants
   # GET /applicants.json
   def index
-    @applicants = Applicant.all
+    @applicants = Applicant.all.order("last_name asc")
   end
 
   # GET /applicants/1
